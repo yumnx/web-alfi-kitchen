@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alfi Kitchen - Catering Harian & Acara</title>
 
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Google Fonts: Plus Jakarta Sans / Playfair Display -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+@extends('layouts.main')
+
+@section('title', 'Home')
+
+@section('styles')
 
     <style>
         :root {
@@ -215,37 +206,9 @@
             color: var(--accent);
         }
     </style>
-</head>
-<body>
+@endsection
 
-    <!-- 1. NAVBAR -->
-    <nav class="navbar navbar-expand-lg sticky-top py-3">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
-                <i class="bi bi-fire text-warning"></i>
-                Alfi<span>Kitchen</span>
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3 text-center">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ url('/') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/menu') }}">Menu</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/testimoni') }}">Testimoni</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/about') }}">About</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+@section('content')
 
     <!-- 2. HERO SECTION -->
     <section class="pt-3 pb-5">
@@ -487,60 +450,4 @@
             </div>
         </div>
     </section>
-
-    <!-- 7. FOOTER -->
-    <footer class="pt-5 pb-4">
-        <div class="container">
-            <div class="row g-4 justify-content-between mb-4">
-                <!-- Info Brand -->
-                <div class="col-lg-4 col-md-6">
-                    <h4 class="text-white fw-bold mb-3">
-                        <i class="bi bi-fire text-warning"></i> Alfi<span style="color: var(--primary);">Kitchen</span>
-                    </h4>
-                    <p class="small leading-relaxed">
-                        UMKM catering rumahan terpercaya sejak 2018. Menyajikan berbagai hidangan nusantara yang halal, higienis, dan kaya cita rasa untuk semua momen spesial Anda.
-                    </p>
-                    <div class="d-flex gap-3 fs-5 mt-3">
-                        <a href="https://facebook.com" target="_blank" title="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="https://instagram.com" target="_blank" title="Instagram"><i class="bi bi-instagram"></i></a>
-                    </div>
-                </div>
-
-                <!-- Kontak & Alamat Lengkap -->
-                <div class="col-lg-4 col-md-6">
-                    <h5 class="text-white fw-bold mb-3">Hubungi Kami</h5>
-                    <ul class="list-unstyled small d-flex flex-column gap-2 mb-0">
-                        <li class="d-flex align-items-start gap-2">
-                            <i class="bi bi-telephone-fill text-warning mt-1"></i>
-                            <span>+62 812-3456-7890 (WhatsApp & Panggilan)</span>
-                        </li>
-                        <li class="d-flex align-items-start gap-2">
-                            <i class="bi bi-geo-alt-fill text-warning mt-1"></i>
-                            <span>Jl. Melati Raya No. 24, Kelurahan Sukamaju, Kecamatan Pancoran, Jakarta Selatan, DKI Jakarta 12780</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Navigasi Cepat -->
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white fw-bold mb-3">Halaman</h5>
-                    <ul class="list-unstyled small d-flex flex-column gap-2">
-                        <li><a href="{{ url('/') }}">Home</a></li>
-                        <li><a href="{{ url('/menu') }}">Menu Katering</a></li>
-                        <li><a href="{{ url('/testimoni') }}">Testimoni Pelanggan</a></li>
-                        <li><a href="{{ url('/about') }}">Tentang Kami</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <hr style="border-color: rgba(255,255,255,0.1);">
-            <div class="text-center small pt-2">
-                &copy; {{ date('Y') }} Alfi Kitchen. Seluruh Hak Cipta Dilindungi.
-            </div>
-        </div>
-    </footer>
-
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+@endsection

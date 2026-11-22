@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('payment_proof')->nullable();
             $table->enum('status', ['pending', 'verified', 'rejected'])->default('pending');
             $table->timestamp('verified_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -22,6 +22,7 @@ return new class extends Migration
         $table->decimal('total_price', 12, 2);
         $table->enum('status', ['pending', 'confirmed', 'cooking', 'on_delivery', 'completed', 'cancelled'])->default('pending');
         $table->enum('payment_status', ['unpaid', 'partial_dp', 'paid', 'refunded'])->default('unpaid');
+        $table->softDeletes();
         $table->timestamps();
     });
 }

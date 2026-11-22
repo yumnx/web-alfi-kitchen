@@ -29,4 +29,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relasi Eloquent ORM: Satu User bisa memiliki banyak Order
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

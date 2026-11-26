@@ -7,6 +7,7 @@ use App\Models\OrderItem;
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -22,15 +23,20 @@ class OrderController extends Controller
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
-            'delivery_date' => 'required|date',
+            'delivery_date' => 'required|date|after_or_equal:today',
             'delivery_time' => 'required',
             'delivery_address' => 'required|string',
             'notes' => 'nullable|string',
+            'payment_method' => 'required|string|max:50',
+            'payment_proof' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'items' => 'required|array|min:1',
             'items.*.menu_id' => 'required|exists:menus,id',
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.item_notes' => 'nullable|string',
         ]);
+
+        // Simpan file bukti transfer ke storage/app/public/payments
+        $proofPath = $request->file('payment_proof')->store('payments', 'public');
 
         // Hitung total harga dari seluruh item yang dipesan
         $totalPrice = 0;
@@ -64,7 +70,16 @@ class OrderController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Pesanan berhasil dibuat dengan kode ' . $order->order_code);
+        // Simpan data bukti pembayaran ke tabel payments via relasi Eloquent
+        $order->payments()->create([
+            'payment_type' => 'full',
+            'payment_method' => $validated['payment_method'],
+            'amount' => $totalPrice,
+            'payment_proof' => $proofPath,
+            'status' => 'pending',
+        ]);
+
+        return redirect()->route('menu')->with('success', 'Pesanan berhasil dibuat (' . $order->order_code . ') dan bukti transfer sedang diverifikasi admin!');
     }
 
     // Menampilkan detail 1 pesanan lengkap
@@ -109,5 +124,29 @@ class OrderController extends Controller
         $order->orderItems()->withTrashed()->restore();
 
         return redirect()->back()->with('success', 'Pesanan berhasil dipulihkan.');
+    }
+
+    public function create(Request $request)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan masuk terlebih dahulu untuk memesan katering.');
+        }
+
+        $menus = Menu::with('category')->where('is_available', true)->get();
+        $selectedMenuId = $request->query('menu_id');
+
+        return view('pages.orders.create', compact('menus', 'selectedMenuId'));
+    }
+
+    public function myOrders()
+    {
+        $user = Auth::user();
+
+        $orders = Order::with(['orderItems.menu', 'payments'])
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
+
+        return view('pages.orders.history', compact('user', 'orders'));
     }
 }

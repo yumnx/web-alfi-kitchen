@@ -14,8 +14,19 @@ class MenuController extends Controller
     {
         $menus = Menu::with('category')->where('is_available', true)->get();
         $categories = Category::all();
-
-        return view('pages.menu', compact('menus', 'categories'));
+    
+        // Manipulasi Collection secara eksplisit
+        $menusByCategory = $menus->groupBy(fn ($menu) => $menu->category->name ?? 'Lainnya');
+        $featuredMenu = $menus->sortByDesc('price')->first();
+        $sideSpotlightMenus = $menus->take(3);
+    
+        return view('pages.menu', compact(
+            'menus',
+            'categories',
+            'menusByCategory',
+            'featuredMenu',
+            'sideSpotlightMenus'
+        ));
     }
 
     // Menyimpan menu baru ke database
